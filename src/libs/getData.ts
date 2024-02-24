@@ -10,7 +10,6 @@ export const getData = async ({
   body,
   headers,
 }: Partial<ApiRequest> = {}) => {
-
   return fetchRequest({
     url,
     endpoint,

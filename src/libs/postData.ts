@@ -10,7 +10,6 @@ export const postData = async ({
   body,
   headers,
 }: Partial<ApiRequest> = {}) => {
-
   return fetchRequest({
     url,
     endpoint,
