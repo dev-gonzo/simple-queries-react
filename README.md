@@ -1,6 +1,6 @@
 <p align="center">
  <picture>
-    <source width="400px" media="(prefers-color-scheme: dark)" srcset="darklogo-whiteSimpleQueries.png">
+    <source width="400px" media="(prefers-color-scheme: dark)" srcset="logo-white.png">
     <source width="400px" media="(prefers-color-scheme: light)" srcset="logo.png">
     <img width="400px" src="logo.png" />
   </picture>
