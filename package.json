@@ -1,0 +1,45 @@
+{
+  "name": "simple-queries-react",
+  "version": "0.0.1",
+  "description": "simpleQueriesReact: Streamlined requests, powerful results",
+  "main": "dist/cjs/index.ts",
+  "module": "dist/esm/index.ts",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [],
+  "author": "Dev Di Lauro",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "@types/react": "^18.0.21",
+    "react": "^18.2.0",
+    "rollup": "^2.79.1",
+    "rollup-plugin-dts": "^4.2.2",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "react": "^16.8.0 || ^17 || ^18",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.4.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17 || ^18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-gonzo/simple-queries.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-gonzo/simple-queries/issues"
+  },
+  "homepage": "https://github.com/dev-gonzo/simple-queries#readme"
+}
