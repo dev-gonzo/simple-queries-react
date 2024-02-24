@@ -36,10 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dev-gonzo/simple-queries.git"
+    "url": "git+https://github.com/dev-gonzo/simple-queries-react.git"
   },
   "bugs": {
-    "url": "https://github.com/dev-gonzo/simple-queries/issues"
+    "url": "https://github.com/dev-gonzo/simple-queries-react/issues"
   },
-  "homepage": "https://github.com/dev-gonzo/simple-queries#readme"
+  "homepage": "https://github.com/dev-gonzo/simple-queries-react#readme"
 }
