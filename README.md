@@ -14,11 +14,15 @@
 Using npm:
 
 ```bash
-$ npm install simple-queries
+$ npm install simple-queries-react
 ```
 
 Using yarn:
 
 ```bash
-$ yarn add simple-queries
+$ yarn add simple-queries-react
 ```
+<p align="center">
+[![Version](https://img.shields.io/npm/v/simple-queries-react?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/simple-queries-react)
+[![Downloads](https://img.shields.io/npm/dt/simple-queries-react.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/simple-queries-react)
+</p>
