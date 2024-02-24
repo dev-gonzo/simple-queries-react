@@ -222,9 +222,9 @@ function MyComponent() {
 
 When employing the pathRest property, you unlock the capability to tailor your requests with remarkable flexibility. This feature streamlines the construction of intricate URLs to cater to your application's precise requirements, seamlessly appending path segments as needed. Such a practice fosters superior organization and clarity within your API invocations, thereby easing code maintenance endeavors. In essence, leveraging the pathRest property presents an elegant and potent solution for managing the intricacies of HTTP requests, bolstering development efficiency and productivity. Don't forget to use null or undefined for resources lacking values.
 
-```html
-http://exemplo.com/simples/123/querires
-```
+ 
+> http://exemplo.com/simples/123/querires
+
 
 ## `params`: Simple, Practical, and Elegant
 
