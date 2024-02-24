@@ -1,7 +1,11 @@
 import { ApiRequest, MethodsRequest } from "../@types";
-import { endsWithSlash } from "../helpers";
-import { buildURLFromMap } from "./buildUrlFromMap";
-import { flattenObject } from "./flattenObject";
+import {
+  buildURLFromMap,
+  endsWithSlash,
+  flattenObject,
+  removeNullValues,
+  removeUndefinedValues,
+} from "../helpers";
 
 export const fetchRequest = async ({
   url = "",
@@ -17,7 +21,9 @@ export const fetchRequest = async ({
     let fullPath: string = endpoint ? `${endpoint}` : "";
 
     if (pathRest) {
-      fullPath = `${fullPath}/${buildURLFromMap(flattenObject(pathRest))}`;
+      fullPath = `${
+        fullPath && !endsWithSlash(fullPath) ? `${fullPath}/` : ""
+      }${buildURLFromMap(flattenObject(pathRest))}`;
     }
 
     if (url) {
@@ -27,7 +33,10 @@ export const fetchRequest = async ({
     }
 
     if (params) {
-      const queryParams = new URLSearchParams(params).toString();
+      const transformParams = removeNullValues(
+        removeUndefinedValues(flattenObject(params))
+      );
+      const queryParams = new URLSearchParams(transformParams).toString();
       fullPath = queryParams ? `${fullPath}?${queryParams}` : fullPath;
     }
 

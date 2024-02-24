@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnyObject, FetchHeaders, UseGet } from "../@types";
-import { getData } from "../libs";
 import { isURL } from "../helpers";
+import { getData } from "../libs";
 
 export function useGet<T, P = AnyObject>(
   props: UseGet | string | undefined | AnyObject = {}
@@ -103,6 +103,8 @@ export function useGet<T, P = AnyObject>(
           params: (dataParams as AnyObject | undefined) ?? undefined,
           pathRest: (dataPathRest as AnyObject | undefined) ?? undefined,
         };
+      } else {
+        options.params = (data as AnyObject | undefined) ?? undefined;
       }
     } else if (typeof data === "string" || typeof data === "number") {
       propsGet.endpoint = propsGet.endpoint
@@ -111,7 +113,7 @@ export function useGet<T, P = AnyObject>(
     }
 
     request({
-      params: options?.params as AnyObject | undefined,
+      params: options?.params ?? ({} as AnyObject | undefined),
       pathRest: options?.pathRest as AnyObject | undefined,
     });
   };
