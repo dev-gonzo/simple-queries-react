@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
 import { isURL } from "../helpers";
-import { postData } from "../libs";
+import { putData } from "../libs";
 
 export function usePost<T, B = AnyObject, P = AnyObject>(
   props: UseGet | string | undefined | AnyObject = {}
@@ -69,7 +69,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     setLoading(true);
     setErrors(undefined);
 
-    await postData({
+    await putData({
       endpoint: propsGet?.endpoint,
       params,
       pathRest,

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
 import { isURL } from "../helpers";
-import { postData } from "../libs";
+import { deleteData } from "../libs";
 
-export function usePost<T, B = AnyObject, P = AnyObject>(
+export function useDelete<T, B = AnyObject, P = AnyObject>(
   props: UseGet | string | undefined | AnyObject = {}
 ) {
   let propsGet: UseGet = {
@@ -69,7 +69,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     setLoading(true);
     setErrors(undefined);
 
-    await postData({
+    await deleteData({
       endpoint: propsGet?.endpoint,
       params,
       pathRest,
