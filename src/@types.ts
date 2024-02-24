@@ -15,6 +15,8 @@ export type ApiRequest = {
   files: File | File[];
 };
 
+export type MethodsRequest = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+
 export type HookRequest = Pick<
   ApiRequest,
   "endpoint" | "headers" | "errorFn" | "url"
