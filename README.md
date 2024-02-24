@@ -413,3 +413,4 @@ function MyComponent() {
 
 > **errorFn:** If you think it won't be noticed, fear not. If you need to handle errors within a function, such as saving logs or addressing any other requirements, simply pass your function here.
 
+#That's all, folks!
