@@ -3,7 +3,7 @@ import { AnyObject, FetchHeaders, UseGet } from "../@types";
 import { isURL } from "../helpers";
 import { getData } from "../libs";
 
-export function useGet<T, P = AnyObject>(
+export function useGet<T, P = AnyObject, B = AnyObject>(
   props: UseGet | string | undefined | AnyObject = {}
 ) {
   let propsGet: UseGet = {
@@ -12,6 +12,9 @@ export function useGet<T, P = AnyObject>(
     headers: undefined,
     url: undefined,
   };
+  const [response, setResponse] = useState<T | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<any>(undefined);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
     const { endpoint, errorFn, headers, url } = props as UseGet;
@@ -22,10 +25,6 @@ export function useGet<T, P = AnyObject>(
     }
     propsGet.endpoint = props;
   }
-
-  const [response, setResponse] = useState<T | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<any>(undefined);
 
   const getResponse = () => {
     return response;
@@ -87,7 +86,8 @@ export function useGet<T, P = AnyObject>(
 
   type Send = Partial<{
     pathRest: AnyObject;
-    params: P | AnyObject;
+    params: P;
+    body: B;
   }>;
 
   const send = (
@@ -96,15 +96,24 @@ export function useGet<T, P = AnyObject>(
     let options: Send | undefined = {};
 
     if (typeof data === "object" && props !== null && !Array.isArray(props)) {
-      const { params: dataParams, pathRest: dataPathRest } = data as Send;
+      const {
+        params: dataParams,
+        pathRest: dataPathRest,
+        body: dataBody,
+      } = data as Send;
 
-      if (dataParams != undefined || dataPathRest != undefined) {
+      if (
+        dataParams != undefined ||
+        dataPathRest != undefined ||
+        dataBody != undefined
+      ) {
         options = {
-          params: (dataParams as AnyObject | undefined) ?? undefined,
+          params: (dataParams as P) ?? undefined,
           pathRest: (dataPathRest as AnyObject | undefined) ?? undefined,
+          body: (dataBody as B) ?? undefined,
         };
       } else {
-        options.params = (data as AnyObject | undefined) ?? undefined;
+        options.params = (data as P) ?? undefined;
       }
     } else if (typeof data === "string" || typeof data === "number") {
       propsGet.endpoint = propsGet.endpoint
@@ -115,6 +124,7 @@ export function useGet<T, P = AnyObject>(
     request({
       params: options?.params ?? ({} as AnyObject | undefined),
       pathRest: options?.pathRest as AnyObject | undefined,
+      body: options?.body as AnyObject | undefined,
     });
   };
 
