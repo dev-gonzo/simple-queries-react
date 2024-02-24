@@ -11,7 +11,16 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "queries",
+    "request",
+    "fetch",
+    "axios",
+    "hooks",
+    "hook",
+    "api"
+  ],
   "author": "Dev Di Lauro",
   "license": "MIT",
   "devDependencies": {
