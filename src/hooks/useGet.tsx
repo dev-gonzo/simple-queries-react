@@ -22,8 +22,9 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsGet.url = props;
+    } else {
+      propsGet.endpoint = props;
     }
-    propsGet.endpoint = props;
   }
 
   const getResponse = () => {

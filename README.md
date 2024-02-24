@@ -31,6 +31,7 @@ Features We've Simplified Already:
 ### Package Manager
 
 Using npm:
+
 ```bash
 $ npm install simple-queries-react
 ```
@@ -39,4 +40,16 @@ Using yarn:
 
 ```bash
 $ yarn add simple-queries-react
+```
+
+Crie seu primeiro GET
+
+Seu GET é um hook. Você pode colocar em qualquer component React ou hook. Esse exemplo é realmente algo bem simple de implementação
+
+```jsx
+import { useGet } from "simple-queries-react";
+
+function MyComponents() {
+  const { send } = useGet("http://exemplo.com");
+}
 ```
