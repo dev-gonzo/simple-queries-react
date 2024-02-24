@@ -53,7 +53,12 @@ export const fetchRequest = async ({
       throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
 
-    return await response.json();
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    } else {
+      return await response.text();
+    }
   } catch (err: any) {
     if (errorFn) {
       errorFn(err);

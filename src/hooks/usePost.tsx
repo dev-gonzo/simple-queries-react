@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
 import { isURL } from "../helpers";
-import { getData } from "../libs";
+import { postData } from "../libs";
 
-export function useGet<T, P = AnyObject, B = AnyObject>(
+export function usePost<T, B = AnyObject, P = AnyObject>(
   props: UseGet | string | undefined | AnyObject = {}
 ) {
   let propsGet: UseGet = {
@@ -69,19 +69,21 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
     setLoading(true);
     setErrors(undefined);
 
-    await getData({
+    await postData({
       endpoint: propsGet?.endpoint,
       params,
       pathRest,
       headers: propsGet.headers,
       errorFn: handleSetErrors,
       url: propsGet.url,
-      body,
+      body: body,
     })
       .then((res) => {
+        console.log("aaa", res)
         setResponse(res);
       })
       .catch(() => {
+        console.log("bbb")
         setResponse(undefined);
       })
       .finally(() => {
@@ -90,13 +92,13 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
   };
 
   type Send = Partial<{
+    body: B;
     pathRest: AnyObject;
     params: P;
-    body: B;
   }>;
 
   const send = (
-    data: Partial<Send> | AnyObject | P | number | string | undefined = {}
+    data: Partial<Send> | AnyObject | B | number | string | undefined = {}
   ) => {
     let options: Send | undefined = {};
 
@@ -107,18 +109,20 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
         body: dataBody,
       } = data as Send;
 
+      console.log("a", data);
       if (
         dataParams != undefined ||
         dataPathRest != undefined ||
         dataBody != undefined
       ) {
+        console.log("b", data);
         options = {
           params: (dataParams as P) ?? undefined,
           pathRest: (dataPathRest as AnyObject | undefined) ?? undefined,
           body: (dataBody as B) ?? undefined,
         };
       } else {
-        options.params = (data as P) ?? undefined;
+        options.body = (data as B) ?? undefined;
       }
     } else if (typeof data === "string" || typeof data === "number") {
       propsGet.endpoint = propsGet.endpoint
