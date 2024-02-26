@@ -1,8 +1,7 @@
 import {
   ApiRequest,
   FetchHeaders,
-  MethodsRequest,
-  SimpleQueriesConfig,
+  SimpleQueriesConfig
 } from "../@types";
 import {
   buildURLFromMap,
@@ -13,17 +12,18 @@ import {
 } from "../helpers";
 import { getConfig } from "./config";
 
-export const fetchRequest = async ({
+export const fetchDownloadRequest = async ({
   url = "",
   endpoint,
   errorFn,
   pathRest,
   params,
-  body,
   headers,
   methods = "GET",
   apiName = undefined,
-}: Partial<ApiRequest> = {}) => {
+  fileName = ["download", "pdf"],
+  download = true,
+}: Partial<ApiRequest & { download: boolean }> = {}) => {
   const config: SimpleQueriesConfig = getConfig();
   const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
 
@@ -103,22 +103,46 @@ export const fetchRequest = async ({
     const response = await fetch(fullPath, {
       method: methods ? methods : "GET",
       headers: {
-        "Content-Type": "application/json",
         ...configHeaders,
       },
-      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
 
-    const contentType = response.headers.get("content-type");
-    if (contentType && contentType.includes("application/json")) {
-      return await response.json();
-    } else {
-      return await response.text();
+    const contentDispositionHeader = response.headers.get(
+      "Content-Disposition"
+    );
+
+    const match =
+      contentDispositionHeader &&
+      contentDispositionHeader.match(/filename="(.+)"/);
+
+    let fileNameDowanload = fileName.join(".");
+
+    if (match) {
+      fileNameDowanload = match[1];
     }
+
+    const fileExtension = fileNameDowanload.split(".").pop();
+
+    const blob = await response.blob();
+    const urlDownload = window.URL.createObjectURL(blob);
+
+    if (!download) {
+      return urlDownload;
+    }
+
+    const a = document.createElement("a");
+    a.href = urlDownload;
+    a.download = fileNameDowanload;
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(urlDownload);
+
+    return fileExtension;
   } catch (err: any) {
     if (errorFn) {
       errorFn(err);

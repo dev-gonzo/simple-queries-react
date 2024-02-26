@@ -14,6 +14,8 @@ export type ApiRequest = {
   errorFn: (data: any) => void;
   files: File | File[];
   apiName: string;
+  methods: MethodsRequest
+  fileName: [string, string];
 };
 
 export type MethodsRequest = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
