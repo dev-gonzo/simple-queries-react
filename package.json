@@ -1,6 +1,6 @@
 {
   "name": "simple-queries-react",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "simpleQueriesReact: Streamlined requests, powerful results",
   "main": "dist/cjs/index.ts",
   "module": "dist/esm/index.ts",
