@@ -9,6 +9,7 @@ export const postData = async ({
   params,
   body,
   headers,
+  apiName,
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
     url,
@@ -18,6 +19,7 @@ export const postData = async ({
     params,
     body,
     headers,
+    apiName,
     methods: "POST",
   });
 };

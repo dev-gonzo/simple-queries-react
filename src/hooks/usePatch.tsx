@@ -1,29 +1,31 @@
 import { useState } from "react";
-import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
+import { AnyObject, ApiRequest, FetchHeaders, UseRequestHook } from "../@types";
 import { isURL } from "../helpers";
 import { patchData } from "../libs";
 
 export function usePatch<T, B = AnyObject, P = AnyObject>(
-  props: UseGet | string | undefined | AnyObject = {}
+  props: UseRequestHook | string | undefined | AnyObject = {}
 ) {
-  let propsGet: UseGet = {
+  let propsPatch: UseRequestHook = {
     endpoint: undefined,
     errorFn: undefined,
     headers: undefined,
     url: undefined,
+    apiName: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<any>(undefined);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url } = props as UseGet;
-    propsGet = { endpoint, errorFn, headers, url };
+    const { endpoint, errorFn, headers, url, apiName } =
+      props as UseRequestHook;
+    propsPatch = { endpoint, errorFn, headers, url, apiName };
   } else if (typeof props === "string") {
     if (isURL(props)) {
-      propsGet.url = props;
-    }else {
-      propsGet.endpoint = props;
+      propsPatch.url = props;
+    } else {
+      propsPatch.endpoint = props;
     }
   }
 
@@ -49,7 +51,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
 
   const handleSetErrors = (data: any) => {
     setErrors(data);
-    propsGet?.errorFn && propsGet.errorFn(data);
+    propsPatch?.errorFn && propsPatch.errorFn(data);
   };
 
   const clearErrors = () => {
@@ -58,7 +60,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
 
   const setHeaders = (headers: FetchHeaders) => {
     if (headers) {
-      propsGet.headers = headers;
+      propsPatch.headers = headers;
     }
   };
 
@@ -71,13 +73,14 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
     setErrors(undefined);
 
     await patchData({
-      endpoint: propsGet?.endpoint,
+      endpoint: propsPatch?.endpoint,
       params,
       pathRest,
-      headers: propsGet.headers,
+      headers: propsPatch.headers,
       errorFn: handleSetErrors,
-      url: propsGet.url,
+      url: propsPatch.url,
       body: body,
+      apiName: propsPatch?.apiName,
     })
       .then((res) => {
         setResponse(res);
@@ -122,8 +125,8 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
         options.body = (data as B) ?? undefined;
       }
     } else if (typeof data === "string" || typeof data === "number") {
-      propsGet.endpoint = propsGet.endpoint
-        ? `${propsGet.endpoint}/${data}`
+      propsPatch.endpoint = propsPatch.endpoint
+        ? `${propsPatch.endpoint}/${data}`
         : `${data}`;
     }
 

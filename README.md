@@ -222,9 +222,7 @@ function MyComponent() {
 
 When employing the pathRest property, you unlock the capability to tailor your requests with remarkable flexibility. This feature streamlines the construction of intricate URLs to cater to your application's precise requirements, seamlessly appending path segments as needed. Such a practice fosters superior organization and clarity within your API invocations, thereby easing code maintenance endeavors. In essence, leveraging the pathRest property presents an elegant and potent solution for managing the intricacies of HTTP requests, bolstering development efficiency and productivity. Don't forget to use null or undefined for resources lacking values.
 
- 
 > http://exemplo.com/simples/123/querires
-
 
 ## `params`: Simple, Practical, and Elegant
 
@@ -390,16 +388,9 @@ function MyComponent() {
     errorFn: (data) => console.log("error", data),
   });
 
-  
   return (
     <>
-      <button
-        onClick={() =>
-          send()
-        }
-      >
-        Action Button
-      </button>
+      <button onClick={() => send()}>Action Button</button>
 
       {isLoading() ? (
         <LoadingComponent />
@@ -413,4 +404,85 @@ function MyComponent() {
 
 > **errorFn:** If you think it won't be noticed, fear not. If you need to handle errors within a function, such as saving logs or addressing any other requirements, simply pass your function here.
 
-#That's all, folks!
+## Advanced Settings
+
+In most cases, we need a default configuration where we don't have to pass the same properties every time we initialize. In "simple-queries-react," this is really a simple task.
+
+Just go to your application's entry file. In this example, we're using [Vite.js](https://vitejs.dev/) with TypeScript, so we'll do the configuration in `main.tsx`.
+
+Create a file at the root of your project called.
+
+```jsx
+import { SimpleQueriesConfig } from "simple-queries-react";
+
+export const simpleQueriesConfig: SimpleQueriesConfig = {
+  bearerToken: localStorage?.getItem("token"),
+  baseUrl: "http://exemplo.com",
+  headers: {
+    // By default, we use:
+    // "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
+  },
+};
+```
+
+In the main.tsx file, we need to initialize the configuration for "simple-queries-react".
+
+To do this, simply follow the steps below, it's as beautiful as it is simple.
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { initSimpleQueries } from "simple-queries-react";
+import { simpleQueriesConfig } from "../simpleQueriesConfig.ts";
+
+// Initialize simple-queries-react with the provided configuration
+initSimpleQueries(simpleQueriesConfig);
+
+// Render your React application
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+## `APIs`: Configuring Multiple Endpoints
+
+In many applications, managing multiple base URLs is a common requirement. Whether you're integrating with various services or working within a microservices architecture without a central proxy, having the flexibility to configure multiple endpoints is essential.
+
+To streamline this process, "simple-queries-react" simplifies the configuration of multiple endpoints. By utilizing the APIs property during initialization, you can easily define and manage your endpoints.
+
+```jsx
+import { SimpleQueriesConfig } from "simple-queries-react";
+
+export const simpleQueriesConfig: SimpleQueriesConfig = {
+  bearerToken: localStorage?.getItem("token"),
+  baseUrl: "http://example.com",
+  APIs: [
+    {
+      name: "SERVICE_CLIENTS",
+      baseUrl: "http://clients.example.com",
+      bearerToken: localStorage?.getItem("token-clients"),
+    },
+    {
+      name: "SERVICE_SALES",
+      baseUrl: "http://sales.example.com",
+      headers: {
+        // If not provided, defaults to:
+        // "Content-Type": "application/json",
+        "Content-Type": "text/html",
+      },
+      // By default, this is true.
+      // If you don't provide a token for this API
+      // and it's defined as true, it will use the main token.
+      enableDefaultToken: false,
+    },
+  ],
+};
+```
+
+This streamlined approach empowers you to effortlessly configure and manage multiple endpoints within your application.
+
+# That's all, folks!

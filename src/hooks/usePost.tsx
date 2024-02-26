@@ -1,29 +1,30 @@
 import { useState } from "react";
-import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
+import { AnyObject, ApiRequest, FetchHeaders, UseRequestHook } from "../@types";
 import { isURL } from "../helpers";
 import { postData } from "../libs";
 
 export function usePost<T, B = AnyObject, P = AnyObject>(
-  props: UseGet | string | undefined | AnyObject = {}
+  props: UseRequestHook | string | undefined | AnyObject = {}
 ) {
-  let propsGet: UseGet = {
+  let propsPost: UseRequestHook = {
     endpoint: undefined,
     errorFn: undefined,
     headers: undefined,
     url: undefined,
+    apiName: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<any>(undefined);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url } = props as UseGet;
-    propsGet = { endpoint, errorFn, headers, url };
+    const { endpoint, errorFn, headers, url, apiName } = props as UseRequestHook;
+    propsPost = { endpoint, errorFn, headers, url, apiName };
   } else if (typeof props === "string") {
     if (isURL(props)) {
-      propsGet.url = props;
+      propsPost.url = props;
     }else {
-      propsGet.endpoint = props;
+      propsPost.endpoint = props;
     }
   }
 
@@ -49,7 +50,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
 
   const handleSetErrors = (data: any) => {
     setErrors(data);
-    propsGet?.errorFn && propsGet.errorFn(data);
+    propsPost?.errorFn && propsPost.errorFn(data);
   };
 
   const clearErrors = () => {
@@ -58,7 +59,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
 
   const setHeaders = (headers: FetchHeaders) => {
     if (headers) {
-      propsGet.headers = headers;
+      propsPost.headers = headers;
     }
   };
 
@@ -71,13 +72,14 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     setErrors(undefined);
 
     await postData({
-      endpoint: propsGet?.endpoint,
+      endpoint: propsPost?.endpoint,
       params,
       pathRest,
-      headers: propsGet.headers,
+      headers: propsPost.headers,
       errorFn: handleSetErrors,
-      url: propsGet.url,
+      url: propsPost.url,
       body: body,
+      apiName: propsPost?.apiName,
     })
       .then((res) => {
         setResponse(res);
@@ -122,8 +124,8 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
         options.body = (data as B) ?? undefined;
       }
     } else if (typeof data === "string" || typeof data === "number") {
-      propsGet.endpoint = propsGet.endpoint
-        ? `${propsGet.endpoint}/${data}`
+      propsPost.endpoint = propsPost.endpoint
+        ? `${propsPost.endpoint}/${data}`
         : `${data}`;
     }
 

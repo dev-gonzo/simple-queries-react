@@ -9,6 +9,7 @@ export const getData = async ({
   params,
   body,
   headers,
+  apiName,
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
     url,
@@ -18,6 +19,7 @@ export const getData = async ({
     params,
     body,
     headers,
+    apiName,
     methods: "GET",
   });
 };

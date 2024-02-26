@@ -1,4 +1,9 @@
-import { ApiRequest, MethodsRequest } from "../@types";
+import {
+  ApiRequest,
+  FetchHeaders,
+  MethodsRequest,
+  SimpleQueriesConfig,
+} from "../@types";
 import {
   buildURLFromMap,
   endsWithSlash,
@@ -6,6 +11,7 @@ import {
   removeNullValues,
   removeUndefinedValues,
 } from "../helpers";
+import { getConfig } from "./config";
 
 export const fetchRequest = async ({
   url = "",
@@ -16,7 +22,49 @@ export const fetchRequest = async ({
   body,
   headers,
   methods = "GET",
+  apiName = undefined,
 }: Partial<ApiRequest & { methods: MethodsRequest }> = {}) => {
+  const config: SimpleQueriesConfig = getConfig();
+  const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
+
+  let configHeaders: FetchHeaders | undefined = undefined;
+
+  if (apiConfig) {
+    configHeaders = {
+      ...apiConfig?.headers,
+      ...headers,
+    };
+  } else {
+    configHeaders = {
+      ...config?.headers,
+      ...headers,
+    };
+  }
+
+  if (config?.bearerToken || apiConfig?.bearerToken) {
+    const enableDefaultToken =
+      apiConfig?.enableDefaultToken !== undefined
+        ? apiConfig?.enableDefaultToken
+        : true;
+
+    if (apiConfig?.bearerToken !== undefined) {
+      configHeaders = {
+        ...configHeaders,
+        Authorization: `Bearer ${apiConfig?.bearerToken}`,
+      };
+    } else if (apiConfig && enableDefaultToken) {
+      configHeaders = {
+        ...configHeaders,
+        Authorization: `Bearer ${config.bearerToken}`,
+      };
+    } else if (config?.bearerToken) {
+      configHeaders = {
+        ...configHeaders,
+        Authorization: `Bearer ${config.bearerToken}`,
+      };
+    }
+  }
+
   try {
     let fullPath: string = endpoint ? `${endpoint}` : "";
 
@@ -29,6 +77,18 @@ export const fetchRequest = async ({
     if (url) {
       fullPath = `${url}${
         fullPath ? `${endsWithSlash(url) ? "" : "/"}${fullPath}` : ""
+      }`;
+    } else if (apiConfig?.baseUrl) {
+      fullPath = `${apiConfig?.baseUrl}${
+        fullPath
+          ? `${endsWithSlash(apiConfig?.baseUrl) ? "" : "/"}${fullPath}`
+          : ""
+      }`;
+    } else if (config?.baseUrl) {
+      fullPath = `${config?.baseUrl}${
+        fullPath
+          ? `${endsWithSlash(config?.baseUrl) ? "" : "/"}${fullPath}`
+          : ""
       }`;
     }
 
@@ -44,7 +104,7 @@ export const fetchRequest = async ({
       method: methods ? methods : "GET",
       headers: {
         "Content-Type": "application/json",
-        ...headers,
+        ...configHeaders,
       },
       body: JSON.stringify(body),
     });

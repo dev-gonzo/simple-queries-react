@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { AnyObject, ApiRequest, FetchHeaders, UseGet } from "../@types";
+import { AnyObject, ApiRequest, FetchHeaders, UseRequestHook } from "../@types";
 import { isURL } from "../helpers";
 import { getData } from "../libs";
 
 export function useGet<T, P = AnyObject, B = AnyObject>(
-  props: UseGet | string | undefined | AnyObject = {}
+  props: UseRequestHook | string | undefined | AnyObject = {}
 ) {
-  let propsGet: UseGet = {
+  let propsGet: UseRequestHook = {
     endpoint: undefined,
     errorFn: undefined,
     headers: undefined,
     url: undefined,
+    apiName: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<any>(undefined);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url } = props as UseGet;
-    propsGet = { endpoint, errorFn, headers, url };
+    const { endpoint, errorFn, headers, url, apiName } =
+      props as UseRequestHook;
+    propsGet = { endpoint, errorFn, headers, url, apiName };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsGet.url = props;
@@ -78,6 +80,7 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
       errorFn: handleSetErrors,
       url: propsGet.url,
       body,
+      apiName: propsGet?.apiName,
     })
       .then((res) => {
         setResponse(res);
