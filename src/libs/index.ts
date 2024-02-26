@@ -8,4 +8,5 @@ export {
   setBearerToken,
   cleanBearerToken,
   setHeaders,
+  getConfig
 } from "./config";

@@ -23,17 +23,17 @@ export const setBearerToken = (
 ): void => {
   if (token != undefined) {
     if (apiName) {
-      const index = configSimpleQueries?.APIs?.findIndex(
-        (item) => item?.name === apiName
-      );
+      const index =
+        configSimpleQueries?.APIs?.findIndex(
+          (item) => item?.name === apiName
+        ) ?? -1;
 
-      if (index && index > -1) {
+      if (index > -1) {
         configSimpleQueries.APIs![index].bearerToken = token;
       }
 
       return;
     }
-
     configSimpleQueries = { ...configSimpleQueries, bearerToken: token };
   }
 };
@@ -42,11 +42,11 @@ export const cleanBearerToken = (
   apiName: string | undefined = undefined
 ): void => {
   if (apiName) {
-    const index = configSimpleQueries?.APIs?.findIndex(
-      (item) => item?.name === apiName
-    );
+    const index =
+      configSimpleQueries?.APIs?.findIndex((item) => item?.name === apiName) ??
+      -1;
 
-    if (index && index > -1) {
+    if (index > -1) {
       configSimpleQueries.APIs![index].bearerToken = undefined;
     }
 
@@ -62,11 +62,12 @@ export const setHeaders = (
 ): void => {
   if (headers) {
     if (apiName) {
-      const index = configSimpleQueries?.APIs?.findIndex(
-        (item) => item?.name === apiName
-      );
+      const index =
+        configSimpleQueries?.APIs?.findIndex(
+          (item) => item?.name === apiName
+        ) ?? -1;
 
-      if (index && index > -1) {
+      if (index > -1) {
         configSimpleQueries.APIs![index].headers = headers;
       }
 

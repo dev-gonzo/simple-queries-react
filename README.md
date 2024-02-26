@@ -51,7 +51,7 @@ With the following code, clicking the "Action Button" will trigger a GET request
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send } = useGet("http://example.com");
 
   return (
@@ -71,7 +71,7 @@ Here, we simulate receiving a JSON response and simply display it on the screen.
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse } = useGet("http://example.com");
 
   return (
@@ -90,7 +90,7 @@ Similarly, we can handle errors from our API. It would be nice if we only had go
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getErrors } = useGet("http://example.com");
 
   return (
@@ -109,7 +109,7 @@ Want to clear the errors? See how simple it is:
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getErrors, clearErrors } = useGet("http://example.com");
 
   return (
@@ -129,7 +129,7 @@ Loading indicators are indeed important, but do it your way; here we just provid
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = useGet("http://example.com");
 
   if (isLoading()) {
@@ -158,7 +158,7 @@ Here's an example of sending a POST request with a body:
 ```jsx
 import { usePost } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = usePost("http://example.com");
 
   return (
@@ -190,7 +190,7 @@ We've prepared fantastic resources to simplify your RESTful API usage. We constr
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = useGet("http://example.com");
 
   return (
@@ -232,7 +232,7 @@ When you need to send parameters in your API requests, it couldn't be simpler:
 ```jsx
 import { useGet } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = useGet("http://example.com");
 
   return (
@@ -298,7 +298,7 @@ Sending data in the body of your request? No problem, it's as easy as pie:
 ```jsx
 import { usePost } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = usePost("http://example.com");
 
   return (
@@ -333,7 +333,7 @@ But we still haven't figured out why you would do that:
 ```jsx
 import { usePost } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = usePost("http://example.com");
 
   return (
@@ -376,7 +376,7 @@ You might need to alter header configurations, and as usual, it's simple and pra
 ```jsx
 import { usePost } from "simple-queries-react";
 
-function MyComponent() {
+export function MyComponent() {
   const { send, getResponse, isLoading } = usePost({
     url: "http://example.com",
     headers: {
@@ -413,6 +413,7 @@ Just go to your application's entry file. In this example, we're using [Vite.js]
 Create a file at the root of your project called.
 
 ```jsx
+// simpleQueiresConfig.ts
 import { SimpleQueriesConfig } from "simple-queries-react";
 
 export const simpleQueriesConfig: SimpleQueriesConfig = {
@@ -484,5 +485,25 @@ export const simpleQueriesConfig: SimpleQueriesConfig = {
 ```
 
 This streamlined approach empowers you to effortlessly configure and manage multiple endpoints within your application.
+
+```jsx
+import { usePost } from "simple-queries-react";
+
+export function MyComponent() {
+  const { send } = usePost({
+    // Here we can choose which API
+    // will be used as the base
+    // If not provided, it will use the main API
+    apiName: "SERVICE_CLIENTS",
+  });
+
+  return (
+    <>
+      <button onClick={() => send()}>Configure</button>
+      <pre>{JSON.stringify(getResponse(), null, 2)}</pre>
+    </>
+  );
+}
+```
 
 # That's all, folks!
