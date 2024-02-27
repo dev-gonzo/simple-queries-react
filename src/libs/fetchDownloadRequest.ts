@@ -1,5 +1,6 @@
 import {
   ApiRequest,
+  FetchDownload,
   FetchHeaders,
   SimpleQueriesConfig
 } from "../@types";
@@ -23,7 +24,7 @@ export const fetchDownloadRequest = async ({
   apiName = undefined,
   fileName = ["download", "pdf"],
   download = true,
-}: Partial<ApiRequest & { download: boolean }> = {}) => {
+}: FetchDownload = {}) => {
   const config: SimpleQueriesConfig = getConfig();
   const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
 
