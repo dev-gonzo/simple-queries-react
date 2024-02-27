@@ -14,6 +14,8 @@ export type ApiRequest = {
   errorFn: (data: any) => void;
   files: File | File[];
   apiName: string;
+  methods: MethodsRequest;
+  fileName: [string, string];
 };
 
 export type MethodsRequest = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -37,3 +39,34 @@ export type Config = {
 export type SimpleQueriesConfig = Config & {
   APIs?: (Config & { name: string; enableDefaultToken?: boolean })[];
 };
+
+export type FileExtensions =
+  | "pdf"
+  | "xml"
+  | "doc"
+  | "docx"
+  | "xls"
+  | "xlsx"
+  | "ppt"
+  | "pptx"
+  | "zip"
+  | "rar"
+  | "jpg"
+  | "jpeg"
+  | "png"
+  | "gif"
+  | "mp3"
+  | "mp4"
+  | "avi";
+
+export type FetchDownload = Partial<
+  Omit<ApiRequest, "body" | "files"> & { download: boolean }
+>;
+
+export type UseDownloadHook = UseRequestHook & {
+  download?: boolean;
+  defaultName?: string;
+  extension?: Extension;
+};
+
+export type Extension = FileExtensions | { customExtension: string };

@@ -3,7 +3,7 @@ import { AnyObject, ApiRequest, FetchHeaders, UseRequestHook } from "../@types";
 import { isURL } from "../helpers";
 import { putData } from "../libs";
 
-export function usePost<T, B = AnyObject, P = AnyObject>(
+export function usePut<T, B = AnyObject, P = AnyObject>(
   props: UseRequestHook | string | undefined | AnyObject = {}
 ) {
   let propsPut: UseRequestHook = {
