@@ -12,7 +12,6 @@ export type ApiRequest = {
   body: AnyObject;
   headers: FetchHeaders | undefined;
   errorFn: (data: any) => void;
-  files: File | File[];
   apiName: string;
   methods: MethodsRequest;
   fileName: [string, string];
