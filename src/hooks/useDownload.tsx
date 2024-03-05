@@ -24,7 +24,9 @@ export function useDownload<P = AnyObject>(
   };
   const [response, setResponse] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<any>(undefined);
+  const [msgErrors, setMsgErrors] = useState<any>(undefined);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
     const {
@@ -72,16 +74,16 @@ export function useDownload<P = AnyObject>(
   };
 
   const getErrors = () => {
-    return errors;
+    return msgErrors;
   };
 
   const handleSetErrors = (data: any) => {
-    setErrors(data);
+    setMsgErrors(data);
     propsDownload?.errorFn && propsDownload.errorFn(data);
   };
 
   const clearErrors = () => {
-    setErrors(undefined);
+    setMsgErrors(undefined);
   };
 
   const setHeaders = (headers: FetchHeaders) => {
@@ -97,7 +99,7 @@ export function useDownload<P = AnyObject>(
     fileName,
   }: Partial<FetchDownload>) => {
     setLoading(true);
-    setErrors(undefined);
+    setMsgErrors(undefined);
 
     await downloadData({
       endpoint: propsDownload?.endpoint,
@@ -111,11 +113,15 @@ export function useDownload<P = AnyObject>(
       download,
     })
       .then((res) => {
+        setSuccess(true);
+        setError(false);
         if (typeof res == "string") {
           setResponse(res);
         }
       })
       .catch(() => {
+        setSuccess(false);
+        setError(true);
         setResponse(undefined);
       })
       .finally(() => {
@@ -207,5 +213,7 @@ export function useDownload<P = AnyObject>(
     getErrors,
     clearErrors,
     setHeaders,
+    success,
+    error,
   };
 }
