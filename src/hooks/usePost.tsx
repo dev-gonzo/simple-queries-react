@@ -14,16 +14,19 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     apiName: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
+  const [msgErrors, setMsgErrors] = useState<any>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<any>(undefined);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } = props as UseRequestHook;
+    const { endpoint, errorFn, headers, url, apiName } =
+      props as UseRequestHook;
     propsPost = { endpoint, errorFn, headers, url, apiName };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsPost.url = props;
-    }else {
+    } else {
       propsPost.endpoint = props;
     }
   }
@@ -45,16 +48,16 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
   };
 
   const getErrors = () => {
-    return errors;
+    return msgErrors;
   };
 
   const handleSetErrors = (data: any) => {
-    setErrors(data);
+    setMsgErrors(data);
     propsPost?.errorFn && propsPost.errorFn(data);
   };
 
   const clearErrors = () => {
-    setErrors(undefined);
+    setMsgErrors(undefined);
   };
 
   const setHeaders = (headers: FetchHeaders) => {
@@ -69,7 +72,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     body,
   }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
     setLoading(true);
-    setErrors(undefined);
+    setMsgErrors(undefined);
 
     await postData({
       endpoint: propsPost?.endpoint,
@@ -82,9 +85,13 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
       apiName: propsPost?.apiName,
     })
       .then((res) => {
+        setSuccess(true);
+        setError(false);
         setResponse(res);
       })
       .catch(() => {
+        setSuccess(false);
+        setError(true);
         setResponse(undefined);
       })
       .finally(() => {
@@ -145,5 +152,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     getErrors,
     clearErrors,
     setHeaders,
+    success,
+    error,
   };
 }
