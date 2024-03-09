@@ -4,7 +4,7 @@ import { isURL } from "../helpers";
 import { deleteData } from "../libs";
 
 export function useDelete<T, B = AnyObject, P = AnyObject>(
-  props: UseRequestHook | string | undefined | AnyObject = {}
+  props: UseRequestHook<T> | string | undefined | AnyObject = {}
 ) {
   let propsDelete: UseRequestHook = {
     endpoint: undefined,
@@ -12,6 +12,7 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
     headers: undefined,
     url: undefined,
     apiName: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,9 +21,9 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
   const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } =
+    const { endpoint, errorFn, headers, url, apiName, onSuccess } =
       props as UseRequestHook;
-    propsDelete = { endpoint, errorFn, headers, url, apiName };
+    propsDelete = { endpoint, errorFn, headers, url, apiName, onSuccess };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsDelete.url = props;
@@ -83,6 +84,7 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
       url: propsDelete.url,
       body: body,
       apiName: propsDelete?.apiName,
+      onSuccess: propsDelete?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

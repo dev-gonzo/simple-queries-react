@@ -12,6 +12,7 @@ export const downloadData = async ({
   fileName,
   download,
   methods = "GET",
+  onSuccess,
 }: Partial<ApiRequest & { download?: boolean }> = {}) => {
   return fetchDownloadRequest({
     url,
@@ -24,5 +25,6 @@ export const downloadData = async ({
     fileName,
     download,
     methods: methods,
+    onSuccess,
   });
 };

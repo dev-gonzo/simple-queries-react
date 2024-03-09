@@ -2,7 +2,7 @@ import {
   ApiRequest,
   FetchDownload,
   FetchHeaders,
-  SimpleQueriesConfig
+  SimpleQueriesConfig,
 } from "../@types";
 import {
   buildURLFromMap,
@@ -24,6 +24,7 @@ export const fetchDownloadRequest = async ({
   apiName = undefined,
   fileName = ["download", "pdf"],
   download = true,
+  onSuccess,
 }: FetchDownload = {}) => {
   const config: SimpleQueriesConfig = getConfig();
   const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
@@ -142,7 +143,7 @@ export const fetchDownloadRequest = async ({
     a.click();
 
     window.URL.revokeObjectURL(urlDownload);
-
+    onSuccess && onSuccess(response);
     return fileExtension;
   } catch (err: any) {
     if (errorFn) {

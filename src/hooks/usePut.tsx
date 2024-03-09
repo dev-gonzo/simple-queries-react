@@ -4,7 +4,7 @@ import { isURL } from "../helpers";
 import { putData } from "../libs";
 
 export function usePut<T, B = AnyObject, P = AnyObject>(
-  props: UseRequestHook | string | undefined | AnyObject = {}
+  props: UseRequestHook<T> | string | undefined | AnyObject = {}
 ) {
   let propsPut: UseRequestHook = {
     endpoint: undefined,
@@ -12,6 +12,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     headers: undefined,
     url: undefined,
     apiName: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [msgEerrors, setMsgErrors] = useState<any>(undefined);
@@ -20,9 +21,9 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
   const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } =
+    const { endpoint, errorFn, headers, url, apiName, onSuccess } =
       props as UseRequestHook;
-    propsPut = { endpoint, errorFn, headers, url, apiName };
+    propsPut = { endpoint, errorFn, headers, url, apiName, onSuccess };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsPut.url = props;
@@ -83,6 +84,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
       url: propsPut.url,
       body: body,
       apiName: propsPut?.apiName,
+      onSuccess: propsPut?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

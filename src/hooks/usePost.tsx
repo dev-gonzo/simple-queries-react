@@ -4,7 +4,7 @@ import { isURL } from "../helpers";
 import { postData } from "../libs";
 
 export function usePost<T, B = AnyObject, P = AnyObject>(
-  props: UseRequestHook | string | undefined | AnyObject = {}
+  props: UseRequestHook<T> | string | undefined | AnyObject = {}
 ) {
   let propsPost: UseRequestHook = {
     endpoint: undefined,
@@ -12,6 +12,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     headers: undefined,
     url: undefined,
     apiName: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [msgErrors, setMsgErrors] = useState<any>(undefined);
@@ -20,9 +21,9 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
   const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } =
+    const { endpoint, errorFn, headers, url, apiName, onSuccess } =
       props as UseRequestHook;
-    propsPost = { endpoint, errorFn, headers, url, apiName };
+    propsPost = { endpoint, errorFn, headers, url, apiName, onSuccess };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsPost.url = props;
@@ -83,6 +84,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
       url: propsPost.url,
       body: body,
       apiName: propsPost?.apiName,
+      onSuccess: propsPost?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

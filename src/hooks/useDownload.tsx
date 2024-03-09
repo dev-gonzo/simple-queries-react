@@ -21,6 +21,7 @@ export function useDownload<P = AnyObject>(
     defaultName: undefined,
     download: undefined,
     extension: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,6 +39,7 @@ export function useDownload<P = AnyObject>(
       defaultName,
       download,
       extension,
+      onSuccess,
     } = props as UseDownloadHook;
     propsDownload = {
       endpoint,
@@ -48,6 +50,7 @@ export function useDownload<P = AnyObject>(
       defaultName,
       download,
       extension,
+      onSuccess,
     };
   } else if (typeof props === "string") {
     if (isURL(props)) {
@@ -111,6 +114,7 @@ export function useDownload<P = AnyObject>(
       apiName: propsDownload?.apiName,
       fileName: fileName,
       download,
+      onSuccess: propsDownload?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

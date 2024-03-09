@@ -4,7 +4,7 @@ import { isURL } from "../helpers";
 import { getData } from "../libs";
 
 export function useGet<T, P = AnyObject, B = AnyObject>(
-  props: UseRequestHook | string | undefined | AnyObject = {}
+  props: UseRequestHook<T> | string | undefined | AnyObject = {}
 ) {
   let propsGet: UseRequestHook = {
     endpoint: undefined,
@@ -12,6 +12,7 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
     headers: undefined,
     url: undefined,
     apiName: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [msgErrors, setMsgErrors] = useState<any>(undefined);
@@ -20,9 +21,9 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
   const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } =
+    const { endpoint, errorFn, headers, url, apiName, onSuccess } =
       props as UseRequestHook;
-    propsGet = { endpoint, errorFn, headers, url, apiName };
+    propsGet = { endpoint, errorFn, headers, url, apiName, onSuccess };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsGet.url = props;
@@ -83,6 +84,7 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
       url: propsGet.url,
       body,
       apiName: propsGet?.apiName,
+      onSuccess: propsGet?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

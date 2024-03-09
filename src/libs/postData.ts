@@ -10,6 +10,7 @@ export const postData = async ({
   body,
   headers,
   apiName,
+  onSuccess,
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
     url,
@@ -21,5 +22,6 @@ export const postData = async ({
     headers,
     apiName,
     methods: "POST",
+    onSuccess,
   });
 };

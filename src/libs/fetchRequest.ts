@@ -23,6 +23,7 @@ export const fetchRequest = async ({
   headers,
   methods = "GET",
   apiName = undefined,
+  onSuccess,
 }: Partial<ApiRequest> = {}) => {
   const config: SimpleQueriesConfig = getConfig();
   const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
@@ -115,7 +116,9 @@ export const fetchRequest = async ({
 
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
-      return await response.json();
+      const resp = await response.json();
+      onSuccess && onSuccess(resp);
+      return resp;
     } else {
       return await response.text();
     }
