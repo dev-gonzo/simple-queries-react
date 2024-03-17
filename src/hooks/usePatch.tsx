@@ -4,7 +4,7 @@ import { isURL } from "../helpers";
 import { patchData } from "../libs";
 
 export function usePatch<T, B = AnyObject, P = AnyObject>(
-  props: UseRequestHook | string | undefined | AnyObject = {}
+  props: UseRequestHook<T> | string | undefined | AnyObject = {}
 ) {
   let propsPatch: UseRequestHook = {
     endpoint: undefined,
@@ -12,6 +12,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
     headers: undefined,
     url: undefined,
     apiName: undefined,
+    onSuccess: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,9 +21,9 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
   const [error, setError] = useState<boolean>(false);
 
   if (typeof props === "object" && props !== null && !Array.isArray(props)) {
-    const { endpoint, errorFn, headers, url, apiName } =
+    const { endpoint, errorFn, headers, url, apiName, onSuccess } =
       props as UseRequestHook;
-    propsPatch = { endpoint, errorFn, headers, url, apiName };
+    propsPatch = { endpoint, errorFn, headers, url, apiName, onSuccess };
   } else if (typeof props === "string") {
     if (isURL(props)) {
       propsPatch.url = props;
@@ -83,6 +84,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
       url: propsPatch.url,
       body: body,
       apiName: propsPatch?.apiName,
+      onSuccess: propsPatch?.onSuccess,
     })
       .then((res) => {
         setSuccess(true);

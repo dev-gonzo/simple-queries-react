@@ -4,7 +4,7 @@ export type AnyObject = Record<string, any>;
 
 export type FetchHeaders = Record<string, string>;
 
-export type ApiRequest = {
+export type ApiRequest<T = any> = {
   url: string;
   endpoint: string;
   pathRest: AnyObject;
@@ -16,18 +16,22 @@ export type ApiRequest = {
   apiName: string;
   methods: MethodsRequest;
   fileName: [string, string];
+  onSuccess: (data?: T) => void;
 };
 
 export type MethodsRequest = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export type HookRequest = Pick<
-  ApiRequest,
-  "endpoint" | "headers" | "errorFn" | "url" | "apiName"
+export type HookRequest<T> = Pick<
+  ApiRequest<T>,
+  "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess"
 >;
 export type RequestGet = Pick<ApiRequest, "params" | "pathRest">;
 
-export type UseRequestHook = Partial<
-  Pick<HookRequest, "endpoint" | "headers" | "errorFn" | "url" | "apiName">
+export type UseRequestHook<T = any> = Partial<
+  Pick<
+    HookRequest<T>,
+    "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess"
+  >
 >;
 
 export type Config = {

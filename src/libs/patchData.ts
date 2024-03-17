@@ -10,6 +10,7 @@ export const patchData = async ({
   body,
   headers,
   apiName,
+  onSuccess,
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
     url,
@@ -21,5 +22,6 @@ export const patchData = async ({
     headers,
     apiName,
     methods: "PATCH",
+    onSuccess,
   });
 };
