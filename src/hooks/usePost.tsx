@@ -72,7 +72,8 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     params,
     pathRest,
     body,
-  }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
+    bodyURLSearchParams
+  }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body" | "bodyURLSearchParams">>) => {
     setLoading(true);
     setMsgErrors(undefined);
 
@@ -86,7 +87,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
       body: body,
       apiName: propsPost?.apiName,
       onSuccess: propsPost?.onSuccess,
-      bodyURLSearchParams: propsPost.bodyURLSearchParams
+      bodyURLSearchParams: bodyURLSearchParams
     })
       .then((res) => {
         setSuccess(true);
@@ -104,14 +105,14 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
   };
 
   type Send = Partial<{
+    bodyURLSearchParams: AnyObject;
     body: B;
     pathRest: AnyObject;
     params: P;
-    bodyURLSearchParams: AnyObject;
   }>;
 
   const send = (
-    data: Partial<Send> | AnyObject | B | number | string | undefined = {}
+    data: Partial<Send> & {bodyURLSearchParams: AnyObject} | AnyObject | B | number | string | undefined = {}
   ) => {
     let options: Send | undefined = {};
 
@@ -149,6 +150,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
       params: options?.params ?? ({} as AnyObject | undefined),
       pathRest: options?.pathRest as AnyObject | undefined,
       body: options?.body as AnyObject | undefined,
+      bodyURLSearchParams: options?.bodyURLSearchParams as AnyObject | undefined,
     });
   };
 

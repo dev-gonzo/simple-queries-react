@@ -72,7 +72,8 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     params,
     pathRest,
     body,
-  }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
+    bodyURLSearchParams
+  }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body" | "bodyURLSearchParams">>) => {
     setLoading(true);
     setMsgErrors(undefined);
 
@@ -86,7 +87,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
       body: body,
       apiName: propsPut?.apiName,
       onSuccess: propsPut?.onSuccess,
-      bodyURLSearchParams: propsPut.bodyURLSearchParams,
+      bodyURLSearchParams: bodyURLSearchParams,
     })
       .then((res) => {
         setSuccess(true);
@@ -149,6 +150,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
       params: options?.params ?? ({} as AnyObject | undefined),
       pathRest: options?.pathRest as AnyObject | undefined,
       body: options?.body as AnyObject | undefined,
+      bodyURLSearchParams: options?.bodyURLSearchParams as AnyObject | undefined,
     });
   };
 
