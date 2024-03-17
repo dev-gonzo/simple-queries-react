@@ -9,6 +9,7 @@ export const deleteData = async ({
   params,
   body,
   headers,
+  apiName,
   onSuccess,
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
@@ -17,8 +18,9 @@ export const deleteData = async ({
     errorFn,
     pathRest,
     params,
-    body,
+    body, 
     headers,
+    apiName,
     methods: "DELETE",
     onSuccess,
   });
