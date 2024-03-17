@@ -58,6 +58,7 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false)
     setMsgErrors(undefined);
   };
 
@@ -74,6 +75,8 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
   }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await deleteData({
       endpoint: propsDelete?.endpoint,
@@ -156,5 +159,6 @@ export function useDelete<T, B = AnyObject, P = AnyObject>(
     setHeaders,
     success,
     error,
+    msgErrors
   };
 }

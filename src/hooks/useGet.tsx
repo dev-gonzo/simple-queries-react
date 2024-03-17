@@ -58,6 +58,7 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false);
     setMsgErrors(undefined);
   };
 
@@ -74,6 +75,8 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
   }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await getData({
       endpoint: propsGet?.endpoint,
@@ -156,5 +159,6 @@ export function useGet<T, P = AnyObject, B = AnyObject>(
     setHeaders,
     success,
     error,
+    msgErrors,
   };
 }

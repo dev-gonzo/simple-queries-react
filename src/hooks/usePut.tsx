@@ -16,7 +16,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     bodyURLSearchParams: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
-  const [msgEerrors, setMsgErrors] = useState<any>(undefined);
+  const [msgErrors, setMsgErrors] = useState<any>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -50,7 +50,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
   };
 
   const getErrors = () => {
-    return msgEerrors;
+    return msgErrors;
   };
 
   const handleSetErrors = (data: any) => {
@@ -59,6 +59,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false);
     setMsgErrors(undefined);
   };
 
@@ -72,10 +73,14 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     params,
     pathRest,
     body,
-    bodyURLSearchParams
-  }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body" | "bodyURLSearchParams">>) => {
+    bodyURLSearchParams,
+  }: Partial<
+    Pick<ApiRequest, "params" | "pathRest" | "body" | "bodyURLSearchParams">
+  >) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await putData({
       endpoint: propsPut?.endpoint,
@@ -150,7 +155,9 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
       params: options?.params ?? ({} as AnyObject | undefined),
       pathRest: options?.pathRest as AnyObject | undefined,
       body: options?.body as AnyObject | undefined,
-      bodyURLSearchParams: options?.bodyURLSearchParams as AnyObject | undefined,
+      bodyURLSearchParams: options?.bodyURLSearchParams as
+        | AnyObject
+        | undefined,
     });
   };
 
@@ -165,5 +172,6 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     setHeaders,
     success,
     error,
+    msgErrors,
   };
 }

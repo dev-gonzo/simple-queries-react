@@ -86,6 +86,7 @@ export function useDownload<P = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false);
     setMsgErrors(undefined);
   };
 
@@ -103,6 +104,8 @@ export function useDownload<P = AnyObject>(
   }: Partial<FetchDownload>) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await downloadData({
       endpoint: propsDownload?.endpoint,
@@ -219,5 +222,6 @@ export function useDownload<P = AnyObject>(
     setHeaders,
     success,
     error,
+    msgErrors
   };
 }

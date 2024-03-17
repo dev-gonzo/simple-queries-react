@@ -58,6 +58,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false);
     setMsgErrors(undefined);
   };
 
@@ -74,6 +75,8 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
   }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body">>) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await patchData({
       endpoint: propsPatch?.endpoint,
@@ -154,6 +157,7 @@ export function usePatch<T, B = AnyObject, P = AnyObject>(
     getErrors,
     clearErrors,
     setHeaders,
+    msgErrors,
     success,
     error,
   };

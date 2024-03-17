@@ -59,6 +59,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
   };
 
   const clearErrors = () => {
+    setError(false);
     setMsgErrors(undefined);
   };
 
@@ -76,6 +77,8 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
   }: Partial<Pick<ApiRequest, "params" | "pathRest" | "body" | "bodyURLSearchParams">>) => {
     setLoading(true);
     setMsgErrors(undefined);
+    setError(false);
+    setSuccess(false);
 
     await postData({
       endpoint: propsPost?.endpoint,
@@ -165,5 +168,6 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
     setHeaders,
     success,
     error,
+    msgErrors
   };
 }
