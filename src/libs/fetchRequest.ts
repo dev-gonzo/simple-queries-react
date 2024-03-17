@@ -112,7 +112,7 @@ export const fetchRequest = async ({
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
+      throw new Error(response.statusText);
     }
 
     const contentType = response.headers.get("content-type");
