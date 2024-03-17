@@ -112,7 +112,8 @@ export const fetchRequest = async ({
     });
 
     if (!response.ok) {
-      throw response.json();
+      const resp = await response.json();
+      throw resp;
     }
 
     const contentType = response.headers.get("content-type");
