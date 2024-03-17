@@ -11,6 +11,7 @@ export const putData = async ({
   headers,
   apiName,
   onSuccess,
+  bodyURLSearchParams
 }: Partial<ApiRequest> = {}) => {
   return fetchRequest({
     url,
@@ -23,5 +24,6 @@ export const putData = async ({
     apiName,
     methods: "PUT",
     onSuccess,
+    bodyURLSearchParams
   });
 };

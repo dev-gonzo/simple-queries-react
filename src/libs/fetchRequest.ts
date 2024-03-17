@@ -24,6 +24,7 @@ export const fetchRequest = async ({
   methods = "GET",
   apiName = undefined,
   onSuccess,
+  bodyURLSearchParams
 }: Partial<ApiRequest> = {}) => {
   const config: SimpleQueriesConfig = getConfig();
   const apiConfig = config?.APIs?.find((item) => item?.name === apiName);
@@ -107,7 +108,7 @@ export const fetchRequest = async ({
         "Content-Type": "application/json",
         ...configHeaders,
       },
-      body: JSON.stringify(body),
+      body: bodyURLSearchParams ? new URLSearchParams(bodyURLSearchParams) : JSON.stringify(body),
     });
 
     if (!response.ok) {

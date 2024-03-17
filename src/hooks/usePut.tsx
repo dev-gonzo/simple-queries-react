@@ -13,6 +13,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     url: undefined,
     apiName: undefined,
     onSuccess: undefined,
+    bodyURLSearchParams: undefined,
   };
   const [response, setResponse] = useState<T | undefined>(undefined);
   const [msgEerrors, setMsgErrors] = useState<any>(undefined);
@@ -85,6 +86,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
       body: body,
       apiName: propsPut?.apiName,
       onSuccess: propsPut?.onSuccess,
+      bodyURLSearchParams: propsPut.bodyURLSearchParams,
     })
       .then((res) => {
         setSuccess(true);
@@ -105,6 +107,7 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
     body: B;
     pathRest: AnyObject;
     params: P;
+    bodyURLSearchParams: AnyObject;
   }>;
 
   const send = (
@@ -117,17 +120,21 @@ export function usePut<T, B = AnyObject, P = AnyObject>(
         params: dataParams,
         pathRest: dataPathRest,
         body: dataBody,
+        bodyURLSearchParams: dataBodyURLSearchParams,
       } = data as Send;
 
       if (
         dataParams != undefined ||
         dataPathRest != undefined ||
-        dataBody != undefined
+        dataBody != undefined ||
+        dataBodyURLSearchParams != undefined
       ) {
         options = {
           params: (dataParams as P) ?? undefined,
           pathRest: (dataPathRest as AnyObject | undefined) ?? undefined,
           body: (dataBody as B) ?? undefined,
+          bodyURLSearchParams:
+            (dataBodyURLSearchParams as AnyObject | undefined) ?? undefined,
         };
       } else {
         options.body = (data as B) ?? undefined;

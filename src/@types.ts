@@ -17,20 +17,21 @@ export type ApiRequest<T = any> = {
   methods: MethodsRequest;
   fileName: [string, string];
   onSuccess: (data?: T) => void;
+  bodyURLSearchParams: AnyObject;
 };
 
 export type MethodsRequest = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type HookRequest<T> = Pick<
   ApiRequest<T>,
-  "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess"
+  "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess" | "bodyURLSearchParams"
 >;
 export type RequestGet = Pick<ApiRequest, "params" | "pathRest">;
 
 export type UseRequestHook<T = any> = Partial<
   Pick<
     HookRequest<T>,
-    "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess"
+    "endpoint" | "headers" | "errorFn" | "url" | "apiName" | "onSuccess" | "bodyURLSearchParams"
   >
 >;
 
