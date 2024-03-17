@@ -1,6 +1,6 @@
 {
   "name": "simple-queries-react",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "Simple Queries React: Streamlined requests, powerful results. Transform your API calls into something simple, fast, and scalable with just a few lines of code.",
   "main": "dist/cjs/index.ts",
   "module": "dist/esm/index.ts",
