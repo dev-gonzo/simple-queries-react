@@ -86,6 +86,7 @@ export function usePost<T, B = AnyObject, P = AnyObject>(
       body: body,
       apiName: propsPost?.apiName,
       onSuccess: propsPost?.onSuccess,
+      bodyURLSearchParams: propsPost.bodyURLSearchParams
     })
       .then((res) => {
         setSuccess(true);
