@@ -112,7 +112,7 @@ export const fetchRequest = async ({
     });
 
     if (!response.ok) {
-      throw new Error(JSON.stringify(response));
+      throw response;
     }
 
     const contentType = response.headers.get("content-type");
@@ -127,6 +127,6 @@ export const fetchRequest = async ({
     if (errorFn) {
       errorFn(err);
     }
-    throw err?.response;
+    throw err;
   }
 };
